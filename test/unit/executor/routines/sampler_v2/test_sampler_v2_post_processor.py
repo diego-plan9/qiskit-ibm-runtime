@@ -540,7 +540,10 @@ class TestSamplerV2PostProcessorFlattening(unittest.TestCase):
         self.assertEqual(result[0].data.shape, ())
 
     def test_twirled_1d_sweep_flattened(self):
-        """Twirled 1-D parametric pub: (num_rand, 3, shots_per_rand, bits) -> (3, total_shots, bits)."""
+        """Twirled 1-D parametric pub.
+
+        (num_rand, 3, shots_per_rand, bits) -> (3, total_shots, bits).
+        """
         num_rand, sweep, shots_per_rand, num_bits = 4, 3, 64, 2
         meas_data = np.random.randint(
             0, 2, size=(num_rand, sweep, shots_per_rand, num_bits), dtype=np.uint8
@@ -556,7 +559,8 @@ class TestSamplerV2PostProcessorFlattening(unittest.TestCase):
     def test_twirled_2d_sweep_flattened(self):
         """Twirled 2-D parametric pub.
 
-        (num_rand, 5, 3, shots_per_rand, bits) -> (5, 3, total_shots, bits)."""
+        (num_rand, 5, 3, shots_per_rand, bits) -> (5, 3, total_shots, bits).
+        """
         num_rand, s1, s2, shots_per_rand, num_bits = 4, 5, 3, 64, 2
         meas_data = np.random.randint(
             0, 2, size=(num_rand, s1, s2, shots_per_rand, num_bits), dtype=np.uint8
@@ -643,7 +647,7 @@ class TestSamplerV2PostProcessorFlattening(unittest.TestCase):
         self.assertEqual(result[1].data.shape, (3,))
 
     def test_twirled_axis_ordering_preserved(self):
-        """Test that parameter sweep axes are not mixed with randomization axes during flattening."""
+        """Test parameter sweep axes are not mixed with randomization axes during flattening."""
         num_rand, sweep, shots_per_rand, num_bits = 2, 3, 2, 1
 
         # Create data where each (rand, param) combination has a unique pattern
