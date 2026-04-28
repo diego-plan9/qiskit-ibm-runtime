@@ -14,7 +14,6 @@
 
 from __future__ import annotations
 
-from dataclasses import asdict
 from datetime import timezone
 
 import numpy as np
@@ -134,7 +133,7 @@ def quantum_program_to_0_1(program: QuantumProgram, options: ExecutorOptions) ->
 
     return ParamsModel(
         quantum_program=QuantumProgramModel(shots=program.shots, items=model_items),
-        options=asdict(options.execution),  # type: ignore[call-overload]
+        options=options.execution.model_dump(),
     )
 
 

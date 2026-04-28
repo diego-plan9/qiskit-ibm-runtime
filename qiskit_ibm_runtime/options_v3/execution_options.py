@@ -12,14 +12,15 @@
 
 """Execution options."""
 
-from pydantic.dataclasses import dataclass
+from pydantic import BaseModel
 
 from .utils import PRIMITIVES_CONFIG
 
 
-@dataclass(config=PRIMITIVES_CONFIG)
-class ExecutionOptions:
+class ExecutionOptions(BaseModel):
     """Low-level execution options."""
+
+    model_config = PRIMITIVES_CONFIG
 
     init_qubits: bool = True
     """Whether to reset the qubits to the ground state for each shot."""

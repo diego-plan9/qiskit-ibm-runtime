@@ -16,8 +16,7 @@ from __future__ import annotations
 
 from typing import Annotated
 
-from pydantic import Field
-from pydantic.dataclasses import dataclass
+from pydantic import Field, BaseModel
 
 from .environment_options import EnvironmentOptions
 from .execution_options import ExecutionOptions
@@ -25,9 +24,10 @@ from .post_selection_options import PostSelectionOptions
 from .utils import PRIMITIVES_CONFIG
 
 
-@dataclass(config=PRIMITIVES_CONFIG)
-class NoiseLearnerV3Options:
+class NoiseLearnerV3Options(BaseModel):
     """Options for :class:`.NoiseLearnerV3`."""
+
+    model_config = PRIMITIVES_CONFIG
 
     shots_per_randomization: Annotated[int, Field(ge=1)] = 128
     """The total number of shots to use per randomized learning circuit."""
