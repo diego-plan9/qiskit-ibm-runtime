@@ -41,9 +41,9 @@ class TestResilienceOptionsDefaults(IBMTestCase):
     def test_set_all_options(self):
         """All fields accept explicit non-default values."""
         opts = ResilienceOptions(
-            measure_mitigation=False,
+            measure_mitigation=True,
             measure_noise_learning={"num_randomizations": 64},
-            pec_mitigation=True,
+            pec_mitigation=False,
             pec={"max_overhead": 50, "noise_gain": 0.5},
             zne_mitigation=True,
             zne={"amplifier": "gate_folding_front", "noise_factors": [1, 3, 5]},
@@ -52,9 +52,9 @@ class TestResilienceOptionsDefaults(IBMTestCase):
                 "layer_1": PauliLindbladMap.identity(num_qubits=1),
             },
         )
-        self.assertFalse(opts.measure_mitigation)
+        self.assertTrue(opts.measure_mitigation)
         self.assertEqual(opts.measure_noise_learning.num_randomizations, 64)
-        self.assertTrue(opts.pec_mitigation)
+        self.assertFalse(opts.pec_mitigation)
         self.assertEqual(opts.pec.max_overhead, 50)
         self.assertEqual(opts.pec.noise_gain, 0.5)
         self.assertTrue(opts.zne_mitigation)

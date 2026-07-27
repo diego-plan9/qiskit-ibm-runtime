@@ -14,15 +14,29 @@
 
 from __future__ import annotations
 
-from typing import Annotated
+from typing import TYPE_CHECKING, Annotated
 
-from pydantic import InstanceOf
+from pydantic import AfterValidator, InstanceOf
 from qiskit.quantum_info import PauliLindbladMap
 
 from .base import BaseOptionsModel
 from .measure_noise_learning import MeasureNoiseLearningOptions
 from .pec import PecOptions
 from .zne import ZneOptions
+
+if TYPE_CHECKING:
+    from pydantic import ValidationInfo
+
+
+def require_measure_mitigation(
+    value: MeasureNoiseLearningOptions, info: ValidationInfo
+) -> MeasureNoiseLearningOptions:
+    """Reject ``measure_noise_learning`` when ``measure_mitigation``is disabled."""
+    if info.data.get("measure_mitigation") is False:
+        raise ValueError(
+            "'measure_noise_learning' options are set, but 'measure_mitigation' is not set to True."
+        )
+    return value
 
 
 class ResilienceOptions(BaseOptionsModel):
@@ -40,7 +54,9 @@ class ResilienceOptions(BaseOptionsModel):
     ``2``.
     """
 
-    measure_noise_learning: MeasureNoiseLearningOptions = MeasureNoiseLearningOptions()
+    measure_noise_learning: Annotated[
+        MeasureNoiseLearningOptions, AfterValidator(require_measure_mitigation)
+    ] = MeasureNoiseLearningOptions()
     """Additional measurement noise learning options."""
 
     pec_mitigation: bool = False
